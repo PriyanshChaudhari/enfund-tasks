@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+<main>
+    <div id="left-menu">
+        <span>Left Menu</span>
+        <div class="user-list">
+            <h2>Users</h2>
+            <br />
+            <ul class="list-group">
+                {% for user in users %}
+                <li class="list-group-item list-group-item-secondary"><a href="{% url 'chat' user.id %}"
+                        class="user-link text-info" data-user-id="{{ user.id }}">{{ user.username }}</a></li>
+                <br />
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="main-content">
+        <span>Main Content</span>
+        <br>
+        <div id="chat-container">
+            <!-- Chat content will be loaded here -->
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12">
+                        <h5 class="bg-secondary text-white p-2">Chat with {{ other_user.username }}</h5>
+                        <form>
+                            <div class="form-group">
+                                {% if messages %}
+                                <div class="jumbotron" id="chat-log"
+                                    style="padding: 4px 2px; max-height: 300px; overflow-y: scroll;">
+                                    {% for message in messages %}
+                                    <div
+                                        class="chat-message {% if message.sender == request.user %}text-right{% else %}text-left{% endif %}">
+                                        <b>{{ message.sender.username }}</b> : {{ message.content }}<br>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="jumbotron" id="chat-log" style="padding: 4px 2px;"></div>
+                                <b>No Messages.</b>
+                                {% endif %}
+                            </div>
+                            <br />
+                            <div class="d-flex form-group justify-content-between">
+                                <input class="form-control w-75 mx-2" placeholder="Enter text here"
+                                    id="chat-message-input" type="text" required></br>
+                                <input class="btn btn-secondary w-25 mx-2" id="chat-message-submit" type="button"
+                                    value="Send">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="right-panel">
+        Right Panel
+        <br>
+        <button id="collapse-button" class="btn btn-secondary text-sm mx-2">Collapse Left Menu</button>
+    </div>
+</main>
+
+{% endblock %}

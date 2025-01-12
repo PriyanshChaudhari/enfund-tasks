@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<main>
+  <div id="left-menu">
+    <span>Left Menu</span>
+    <br>
+    <div class="user-list">
+      <!-- <h2>Users</h2>
+      <br />
+      <ul class="list-group">
+        {% for user in users %}
+        <li class="list-group-item list-group-item-secondary"><a href="{% url 'chat' user.id %}"
+            class="user-link text-info" data-user-id="{{ user.id }}">{{ user.username }}</a></li>
+        <br />
+        {% endfor %}
+      </ul> -->
+    </div>
+  </div>
+  <div id="main-content">
+    <span>Main Content</span>
+    <br>
+    <div class="container">
+      <h5 class="bg-secondary text-white p-2">Log In</h5>
+      <div class="d-flex justify-content-center my-2" >
+
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-secondary btn-lg btn-block">Log In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="right-panel">
+    Right Panel
+    <br>
+    <button id="collapse-button" class="btn btn-secondary text-sm mx-2">Collapse Left Menu</button>
+  </div>
+</main>
+
+{% endblock %}
