@@ -3,178 +3,65 @@
 {% block title %}Chat{% endblock %}
 
 {% block content %}
-    <main>
-        <div id="left-menu">
-            <span>Left Menu</span>
-            <div class="user-list">
-                <h2>Users</h2>
+<main>
+    <div id="left-menu">
+        <span>Left Menu</span>
+        <div class="user-list">
+            <h2>Users</h2>
+            <br />
+            <ul class="list-group">
+                {% for user in users %}
+                <li class="list-group-item list-group-item-secondary"><a href="{% url 'chat' user.id %}"
+                        class="user-link text-info" data-user-id="{{ user.id }}">{{ user.username }}</a></li>
                 <br />
-                <ul class="list-group">
-                    {% for user in users %}
-                    <li class="list-group-item list-group-item-secondary" ><a href="{% url 'chat' user.id %}" class="user-link text-info" data-user-id="{{ user.id }}">{{ user.username }}</a></li>
-                    <br />
-                    {% endfor %}
-                </ul>
-            </div>
+                {% endfor %}
+            </ul>
         </div>
-        <div id="main-content">
-            <span>Main Content</span>
-            <br>
-            <div id="chat-container">
-                <!-- Chat content will be loaded here -->
-                <div class="container">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-12">
-                            <h5 class="bg-secondary text-white p-2">Chat with {{ other_user.username }}</h5>
-                            <form>
-                                <div class="form-group">
-                                    {% if messages %}
-                                    <div class="jumbotron" id="chat-log"
-                                        style="padding: 4px 2px; max-height: 300px; overflow-y: scroll;">
-                                        {% for message in messages %}
-                                        <div
-                                            class="chat-message {% if message.sender == request.user %}text-right{% else %}text-left{% endif %}">
-                                            <b>{{ message.sender.username }}</b> : {{ message.content }}<br>
-                                        </div>
-                                        {% endfor %}
+    </div>
+    <div id="main-content">
+        <span>Main Content</span>
+        <br>
+        <div id="chat-container">
+            <!-- Chat content will be loaded here -->
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12">
+                        <h5 class="bg-secondary text-white p-2">Chat with {{ other_user.username }}</h5>
+                        <form>
+                            <div class="form-group">
+                                {% if messages %}
+                                <div class="jumbotron" id="chat-log"
+                                    style="padding: 4px 2px; max-height: 300px; overflow-y: scroll;">
+                                    {% for message in messages %}
+                                    <div
+                                        class="chat-message {% if message.sender == request.user %}text-right{% else %}text-left{% endif %}">
+                                        <b>{{ message.sender.username }}</b> : {{ message.content }}<br>
                                     </div>
-                                    {% else %}
-                                    <div class="jumbotron" id="chat-log" style="padding: 4px 2px;"></div>
-                                    <b>No Messages.</b>
-                                    {% endif %}
+                                    {% endfor %}
                                 </div>
-                                <br />
-                                <div class="d-flex form-group justify-content-between">
-                                    <input class="form-control w-75 mx-2" placeholder="Enter text here" id="chat-message-input"
-                                        type="text" required></br>
-                                    <input class="btn btn-secondary w-25 mx-2" id="chat-message-submit" type="button"
-                                        value="Send">
-                                </div>
-                            </form>
-                        </div>
+                                {% else %}
+                                <div class="jumbotron" id="chat-log" style="padding: 4px 2px;"></div>
+                                <b>No Messages.</b>
+                                {% endif %}
+                            </div>
+                            <br />
+                            <div class="d-flex form-group justify-content-between">
+                                <input class="form-control w-75 mx-2" placeholder="Enter text here"
+                                    id="chat-message-input" type="text" required></br>
+                                <input class="btn btn-secondary w-25 mx-2" id="chat-message-submit" type="button"
+                                    value="Send">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="right-panel">
-            Right Panel
-            <br>
-            <button id="collapse-button" class="btn btn-secondary text-sm mx-2">Collapse Left Menu</button>
-        </div>
-    </main>
+    </div>
+    <div id="right-panel">
+        Right Panel
+        <br>
+        <button id="collapse-button" class="btn btn-secondary text-sm mx-2">Collapse Left Menu</button>
+    </div>
+</main>
 
-    {% endblock %}
-    <!-- <footer>Footer</footer>
-    <script>
-        document.getElementById('collapse-button').addEventListener('click', function () {
-            var leftMenu = document.getElementById('left-menu');
-            leftMenu.classList.toggle('collapsed');
-        });
-
-        function adjustPageSize() {
-            var width = window.innerWidth;
-            var scale = 1;
-
-            if (width >= 992 && width <= 1600) {
-                scale = 0.9;
-            } else if (width >= 700 && width <= 767) {
-                scale = 0.8;
-            } else if (width >= 600 && width < 700) {
-                scale = 0.75;
-            } else if (width <= 600) {
-                scale = 0.5;
-            }
-
-            document.body.style.transform = 'scale(' + scale + ')';
-        }
-
-        window.addEventListener('load', adjustPageSize);
-
-        // document.querySelectorAll('.user-link').forEach(function (link) {
-        //     link.addEventListener('click', function (e) {
-        //         e.preventDefault();
-        //         const userId = this.getAttribute('data-user-id');
-        //         fetch(`/chat/${userId}/`)
-        //             .then(response => response.text())
-        //             .then(html => {
-        //                 document.getElementById('chat-container').innerHTML = html;
-        //                 setupWebSocket(userId);
-        //             });
-        //     });
-        // });
-
-        function setupWebSocket(userId) {
-            const chatSocket = new WebSocket(
-                'ws://' + window.location.host + '/ws/chat/' + userId + '/'
-            );
-
-            chatSocket.onopen = function (e) {
-                console.log("The connection was setup successfully!");
-            };
-
-            chatSocket.onclose = function (e) {
-                console.log("Something unexpected happened!");
-            };
-
-            document.querySelector("#chat-message-input").focus();
-            document.querySelector("#chat-message-input").onkeyup = function (e) {
-                if (e.keyCode == 13) {
-                    e.preventDefault();
-                    document.querySelector("#chat-message-submit").click();
-                }
-            };
-
-            document.querySelector("#chat-message-submit").onclick = function (e) {
-                const messageInputDom = document.querySelector("#chat-message-input");
-                const message = messageInputDom.value;
-
-                if (message.length == 0) {
-                    alert("Add some input first or press the send button!");
-                } else {
-                    chatSocket.send(JSON.stringify({
-                        'message': message,
-                        'sender': '{{ request.user.username }}'
-                    }));
-                    messageInputDom.value = '';
-                }
-            };
-
-
-            chatSocket.onmessage = function (e) {
-                const data = JSON.parse(e.data);
-                const newMessage = document.createElement('div');
-                newMessage.innerHTML = '<b>' + data.sender + '</b> : ' + data.message;
-
-                // Add class based on user authentication
-                if (data.sender === "{{ request.user.username }}") {
-                    newMessage.classList.add("chat-message", "text-right");
-                } else {
-                    newMessage.classList.add("chat-message", "text-left");
-                }
-
-                console.log("newMessage: ", newMessage);
-                document.querySelector("#chat-log").appendChild(newMessage);
-                scrollToBottom();
-            };
-
-            function scrollToBottom() {
-                const chatLog = document.querySelector("#chat-log");
-                chatLog.scrollTop = chatLog.scrollHeight;
-            }
-
-            // Scroll to bottom when the page is loaded
-            scrollToBottom();
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-</body>
-
-</html> -->
+{% endblock %}

@@ -1,14 +1,3 @@
-# from django.urls import path
-
-# from . import views
-
-
-# urlpatterns = [
-#     path("", views.rooms, name="rooms"),
-#     path("<str:slug>", views.room, name="room"),
-# ]
-
-#v2
 from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
