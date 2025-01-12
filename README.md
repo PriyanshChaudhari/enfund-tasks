@@ -71,4 +71,4 @@ This repository contains tasks related to frontend development, Django, and AWS.
 
 - `Q1.py`: AWS Lambda function to add two numbers.
 - `Q2.py`: AWS Lambda function to store a document in an S3 bucket.
-- `Q3.md`: AWS theory answers
+- `Q3.md`: AWS theory answers.
