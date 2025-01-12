@@ -22,18 +22,6 @@ This repository contains tasks related to frontend development, Django, and AWS.
     │ └── Q3.md
 
 
-enfund/ 
-├── frontend/ 
-│ ├── Q1.html 
-│ ├── Q1.css 
-│ └── Q1.js 
-├── django/ 
-│ ├── enfund_django/ 
-│ │ ├── manage.py 
-│ │ ├── enfund_django/ 
-│ │ ├── loginapp/ 
-│ │ ├── chatapp/ 
-│ │ └── templates/ 
 ## Frontend Development
 - `Q1.html`: HTML file for the webpage structure.
 - `Q1.css`: CSS file for styling the webpage.
